@@ -6,7 +6,7 @@ module SpreeMultiCurrency
 
     require 'spree/core/currency_helpers'
 
-    def self.activate
+    def self.activate(app)
       ['../../app/**/*_decorator*.rb', '../../lib/**/*_decorator*.rb'].each do |path|
         Dir.glob(File.join(File.dirname(__FILE__), path)) do |c|
           Rails.configuration.cache_classes ? require(c) : load(c)
@@ -15,6 +15,6 @@ module SpreeMultiCurrency
       ApplicationController.send :include, Spree::CurrencyHelpers
     end
 
-    config.to_prepare(&method(:activate).to_proc)
+    config.before_initialize(&method(:activate).to_proc)
   end
 end
