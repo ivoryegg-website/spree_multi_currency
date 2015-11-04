@@ -16,5 +16,9 @@ module SpreeMultiCurrency
     end
 
     config.to_prepare(&method(:activate).to_proc)
+    config.before_initialize do
+      path = File.expand_path "#{__dir__}/../../app/models/spree/app_configuration_decorator.rb"
+      Rails.configuration.cache_classes ? require(path) : load(path)
+    end
   end
 end
